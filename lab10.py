@@ -11,8 +11,10 @@
 
 
 def eval_rpn(tokens):
-    # Outline (write your plan here first):
-    #   ...
+    # Outline:
+    # need to introduce order of operations for Polish Notation. PEDMAS but Polish way...
+
+
     # TODO: `tokens` is a list of strings in Reverse Polish Notation - either an integer
     #   or one of the operators "+", "-", "*", "/". Evaluate it and return the integer
     #   result. Division should truncate toward zero (int(a / b)).
@@ -22,7 +24,9 @@ def eval_rpn(tokens):
 
 def decode_string(s):
     # Outline:
-    #   ...
+    # need to introduce functions that can print a selected letter every "x" times (prints every x position in the string)
+    # within the same function i need to create conditions 
+
     # TODO: decode a string written with the rule k[encoded], meaning `encoded` repeated
     #   k times. The brackets can be nested.
     #   Example: "3[a2[c]]"  ->  "accaccacc"
