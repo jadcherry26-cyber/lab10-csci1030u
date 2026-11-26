@@ -23,9 +23,9 @@ def eval_rpn(tokens):
     # Approach:
     #   Use a stack of numbers.
     #   For each token:
-    #     - If it is a number, convert it to an integer and push it.
-    #     - If it is an operator, pop the right operand, then the left
-    #       operand. Apply the operator in that order and push the result.
+    #      If it is a number, convert it to an integer and push it.
+    #      If it is an operator, pop the right operand, then the left
+    #      operand. Apply the operator in that order and push the result.
     #   The final stack value is the answer.
     #   For division, make sure the result truncates toward zero.
     # endregion
@@ -109,13 +109,23 @@ def daily_temperatures(temps):
     #   Keep a stack of day indices whose warmer day has not been found.
     #   For each new day, while its temperature is warmer than the
     #   temperature at the index on top of the stack:
-    #     - pop that earlier index;
-    #     - set its answer to the difference between the current day and
-    #       that earlier day.
+    #     pop that earlier index;
+    #     set its answer to the difference between the current day and
+    #     that earlier day.
     #   Push the current day index onto the stack.
     #   Any indices left on the stack keep answer 0.
     # endregion
-    pass
+    answers = [0] * len(temps)
+    stack = []
+
+    for today_index, today_temp in enumerate(temps):
+        while stack and today_temp > temps[stack[-1]]:
+            earlier_index = stack.pop()
+            answers[earlier_index] = today_index - earlier_index
+
+        stack.append(today_index)
+
+    return answers
 
 
 def num_islands(grid):   # Part 4 - stretch (optional)
@@ -133,20 +143,59 @@ def num_islands(grid):   # Part 4 - stretch (optional)
     #   Keep track of which land cells have already been visited.
     #   Scan every cell in the grid.
     #   Whenever an unvisited land cell is found:
-    #     - increase the island count;
-    #     - explore all land cells connected to it using a stack or queue;
-    #     - mark cells visited as they are added, so they are not explored
-    #       again.
+    #     increase the island count;
+    #     explore all land cells connected to it using a stack or queue;
+    #     mark cells visited as they are added, so they are not explored
+    #     again.
     #   During exploration, check only the four neighbors: up, down, left,
     #   and right. Check that each neighbor is inside the grid.
     #   Return the island count.
     # endregion
-    pass
+    if not grid or not grid[0]:
+        return 0
+
+    rows = len(grid)
+    cols = len(grid[0])
+    visited = set()
+    islands = 0
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == "1" and (r, c) not in visited:
+                islands += 1
+                stack = [(r, c)]
+                visited.add((r, c))
+
+                while stack:
+                    row, col = stack.pop()
+
+                    for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                        nr = row + dr
+                        nc = col + dc
+
+                        if (0 <= nr < rows
+                            and 0 <= nc < cols
+                            and grid[nr][nc] == "1"
+                            and (nr, nc) not in visited):
+                            visited.add((nr, nc))
+                            stack.append((nr, nc))
+
+    return islands
 
 
 def main():
-    # Optional scratch space - try your functions here, then run: python lab10.py
-    # print(eval_rpn(["2", "1", "+", "3", "*"]))   # 9
+    print("eval_rpn:", eval_rpn(["2", "1", "+", "3", "*"]))  # 9
+    print("eval_rpn division:", eval_rpn(["-7", "2", "/"]))  # -3
+
+    print("decode_string:", decode_string("3[a2[c]]"))      # accaccacc
+    print("decode_string adjacent:", decode_string("3[a]2[bc]"))  # aaabcbc
+
+    print("daily_temperatures:",
+          daily_temperatures([73, 74, 75, 71, 69, 72, 76, 73]))
+    # [1, 1, 4, 2, 1, 1, 0, 0]
+
+    print("num_islands:",
+          num_islands(["11000", "11000", "00100", "00011"]))  # 3
     pass
 
 
