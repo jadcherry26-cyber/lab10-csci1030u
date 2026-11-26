@@ -85,7 +85,13 @@ def decode_string(s):
             stack.append((current_text, repeat_count))
             current_text = ""
             repeat_count = 0
-    pass
+        elif char.isalpha():
+            current_text += char
+        elif char == "]":
+            previous_text, repeat_count = stack.pop()
+            current_text = previous_text + current_text * repeat_count
+            repeat_count = 0
+    return current_text
 
 
 def daily_temperatures(temps):
